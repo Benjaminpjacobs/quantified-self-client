@@ -42,9 +42,25 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	
+	var Food = __webpack_require__(1);
 
-/***/ }
+	$(document).ready(function () {
+	    debugger;
+	});
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+	class Food {
+	    constructor(id, name, calories) {
+	        this.id = id;
+	        this.name = name;
+	        this.calories = calories;
+	    }
+	}
+
+/***/ })
 /******/ ]);
