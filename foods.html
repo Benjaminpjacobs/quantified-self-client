@@ -8,24 +8,38 @@
 </head>
 
 <body>
-    <h1>Foods:</h1>
-    <input type="text" id='new-food-name'>
-    <input type="text" id='new-food-cal'>
-    <button id='submit'>Add Food</button>
+    <div class='container'>
+        <div class='row'>
+            <h1>Foods:</h1>
+        </div>
+        <div class='row input-group'>
+            <label class='input-group-addon' for="new-food-name">Food:</label>
+            <input class='form-control' type="text" id='new-food-name' placeholder='e.g. Pizza'>
+        </div>
+        <div class='row input-group'>
+            <label class='input-group-addon' for="new-food-cal">Calories:</label>
+            <input class='form-control' type="text" id='new-food-cal' placeholder='e.g. 150'>
+        </div>
+        <div class='row'>
+            <button class='btn btn-primary' id='submit'>Add Food</button>
+        </div>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Food</th>
-                <th>Calorie</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id='food-index'>
+        <div class='row'>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Food</th>
+                        <th>Calorie</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id='food-index'>
 
-        </tbody>
-    </table>
-    <script src="main.bundle.js"></script>
+                </tbody>
+            </table>
+            <script src="main.bundle.js"></script>
+        </div>
+    </div>
 </body>
 
 </html>
