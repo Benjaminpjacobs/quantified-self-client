@@ -9,10 +9,10 @@
 
 <body>
     <div class='container'>
-        <div class='row' id='meals'>
-            <div class='row meal' id='breakfast'>
+        <div class='meal-tables' id='meals'>
+            <div class='meal' id='breakfast'>
                 <h1>Breakfast:</h1>
-                <div class='row'>
+                <div class=''>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -22,14 +22,23 @@
                             </tr>
                         </thead>
                         <tbody id='breakfast-items'>
-
+                            <tr>
+                                <td>Total Calories:</td>
+                                <td id='breakfast-calories'></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Remaining Calories:</td>
+                                <td id='breakfast-calories'></td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class='row meal' id='lunch'>
+            <div class='meal' id='lunch'>
                 <h1>Lunch:</h1>
-                <div class='row'>
+                <div class=''>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -39,14 +48,18 @@
                             </tr>
                         </thead>
                         <tbody id='lunch-items'>
-
+                            <tr>
+                                <td>Total Calories:</td>
+                                <td id='lunch-calories'></td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class='row meal' id='snack'>
+            <div class='meal' id='snack'>
                 <h1>Snack:</h1>
-                <div class='row'>
+                <div class=''>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -56,14 +69,18 @@
                             </tr>
                         </thead>
                         <tbody id='snack-items'>
-
+                            <tr>
+                                <td>Total Calories:</td>
+                                <td id='snack-calories'></td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class='row meal' id='dinner'>
+            <div class='meal' id='dinner'>
                 <h1>Dinner:</h1>
-                <div class='row'>
+                <div class=''>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -73,13 +90,39 @@
                             </tr>
                         </thead>
                         <tbody id='dinner-items'>
-
+                            <tr>
+                                <td>Total Calories:</td>
+                                <td id='dinner-calories'></td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        <script src="main.bundle.js"></script>
+        <div class='row calculations'>
+            <h1>Totals:</h1>
+            <div class='row'>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Goal</th>
+                            <th>Total</th>
+                            <th>Remaining</th>
+                        </tr>
+                    </thead>
+                    <tbody id='total-remaining-calories'>
+                        <tr>
+                            <td id='goal-calories'></td>
+                            <td id='total-calories'></td>
+                            <td class='remaining' id='remaining-calories'></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="main.bundle.js"></script>
     </div>
 </body>
 

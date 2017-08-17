@@ -16,3 +16,25 @@ button {
 .row {
     margin: 10px 0;
 }
+
+.meal-tables {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.meal {
+    width: 40%;
+    margin: 10px;
+}
+
+.calculations {
+    width: 40%;
+}
+
+.remaining {
+    color: green
+}
+
+.negative {
+    color: red;
+}
