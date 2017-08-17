@@ -1,11 +1,129 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Quantified Self - Diary</title>
-</head>
-<body>
+<!DOCTYPE html>
 
-  <script src="main.bundle.js"></script>
+<head>
+    <meta charset="utf-8">
+    <title>Quantified Self - Diary</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class='container'>
+        <div class='meal-tables' id='meals'>
+            <div class='meal' id='breakfast'>
+                <h1>Breakfast:</h1>
+                <div class=''>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Food</th>
+                                <th>Calorie</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id='breakfast-items'>
+                            <tr>
+                                <td>Total Calories:</td>
+                                <td id='breakfast-calories'></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Remaining Calories:</td>
+                                <td id='breakfast-calories'></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class='meal' id='lunch'>
+                <h1>Lunch:</h1>
+                <div class=''>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Food</th>
+                                <th>Calorie</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id='lunch-items'>
+                            <tr>
+                                <td>Total Calories:</td>
+                                <td id='lunch-calories'></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class='meal' id='snack'>
+                <h1>Snack:</h1>
+                <div class=''>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Food</th>
+                                <th>Calorie</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id='snack-items'>
+                            <tr>
+                                <td>Total Calories:</td>
+                                <td id='snack-calories'></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class='meal' id='dinner'>
+                <h1>Dinner:</h1>
+                <div class=''>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Food</th>
+                                <th>Calorie</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id='dinner-items'>
+                            <tr>
+                                <td>Total Calories:</td>
+                                <td id='dinner-calories'></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class='row calculations'>
+            <h1>Totals:</h1>
+            <div class='row'>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Goal</th>
+                            <th>Total</th>
+                            <th>Remaining</th>
+                        </tr>
+                    </thead>
+                    <tbody id='total-remaining-calories'>
+                        <tr>
+                            <td id='goal-calories'></td>
+                            <td id='total-calories'></td>
+                            <td class='remaining' id='remaining-calories'></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="main.bundle.js"></script>
+    </div>
 </body>
+
 </html>
