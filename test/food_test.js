@@ -1,5 +1,5 @@
 const assert = require('chai').assert
-const Food = require("../lib/javascripts/food.js")
+const Food = require("../lib/food.js")
 
 describe('test food object', function() {
     it('should hold name and calories', function() {
