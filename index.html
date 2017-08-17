@@ -1,11 +1,86 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Quantified Self - Diary</title>
-</head>
-<body>
+<!DOCTYPE html>
 
-  <script src="main.bundle.js"></script>
+<head>
+    <meta charset="utf-8">
+    <title>Quantified Self - Diary</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class='container'>
+        <div class='row' id='meals'>
+            <div class='row meal' id='breakfast'>
+                <h1>Breakfast:</h1>
+                <div class='row'>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Food</th>
+                                <th>Calorie</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id='breakfast-items'>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class='row meal' id='lunch'>
+                <h1>Lunch:</h1>
+                <div class='row'>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Food</th>
+                                <th>Calorie</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id='lunch-items'>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class='row meal' id='snack'>
+                <h1>Snack:</h1>
+                <div class='row'>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Food</th>
+                                <th>Calorie</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id='snack-items'>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class='row meal' id='dinner'>
+                <h1>Dinner:</h1>
+                <div class='row'>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Food</th>
+                                <th>Calorie</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id='dinner-items'>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script src="main.bundle.js"></script>
+    </div>
 </body>
+
 </html>
