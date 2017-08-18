@@ -9,6 +9,13 @@
     }
 }
 
+.table-bordered {
+    border-right: 0;
+    .delete-food {
+        border: 0;
+    }
+}
+
 button {
     margin: 10px 0;
 }
@@ -31,7 +38,7 @@ button {
     width: 40%;
 }
 
-.remaining {
+.calories {
     color: green
 }
 
