@@ -1,0 +1,47 @@
+.table {
+    margin-top: 20px;
+}
+
+.delete-food {
+    .glyphicon {
+        color: red;
+        font-size: 20px;
+    }
+}
+
+.table-bordered {
+    border-right: 0;
+    .delete-food {
+        border: 0;
+    }
+}
+
+button {
+    margin: 10px 0;
+}
+
+.row {
+    margin: 10px 0;
+}
+
+.meal-tables {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.meal {
+    width: 40%;
+    margin: 10px;
+}
+
+.calculations {
+    width: 40%;
+}
+
+.calories {
+    color: green
+}
+
+.negative {
+    color: red;
+}
