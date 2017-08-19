@@ -21,4 +21,16 @@ describe('test food object', function() {
                 </tr>`
         assert.equal(food.toHTML(), expected)
     })
+
+    it('should return different HTML for the Diary', function() {
+        const food = new Food({ id: 1, name: 'Banana', calories: 150 })
+        let expected = `<tr class='food' id=1>
+                <td>Banana</td>
+                <td>150</td>
+                <td class='add-food-check'>
+                  <input type='checkbox'>
+                  </td>
+              </tr>`
+        assert.equal(food.toDiaryHTML(), expected)
+    })
 })
