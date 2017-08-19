@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <div class='container'>
+    <div class='container diary'>
         <div class='meal-tables' id='meals'>
             <div class='meal' id='breakfast'>
                 <h1>Breakfast:</h1>
@@ -102,31 +102,66 @@
                     </table>
                 </div>
             </div>
+            <div class='row calculations'>
+                <h1>Totals:</h1>
+                <div class='row'>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Goal</th>
+                                <th>Total</th>
+                                <th>Remaining</th>
+                            </tr>
+                        </thead>
+                        <tbody id='total-remaining-calories'>
+                            <tr>
+                                <td id='goal-calories'></td>
+                                <td id='total-calories'></td>
+                                <td class='calories' id='remaining-calories'></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class='row calculations'>
-            <h1>Totals:</h1>
+        <div id='diary-index'>
+            <h1>Foods:</h1>
             <div class='row'>
-                <table class="table table-bordered">
+                <a href="/foods.html">
+                    <button class='btn btn-primary' id='submit'>New Food</button>
+                </a>
+            </div>
+            <div class='row'>
+                <h4> Add Selected To </h4>
+                <div class='meal-buttons'>
+                    <button class='btn btn-primary meal-button' id='breakfast-submit'>Breakfast</button>
+                    <button class='btn btn-primary meal-button' id='lunch-submit'>Lunnch</button>
+                    <button class='btn btn-primary meal-button' id='dinner-submit'>Snack</button>
+                    <button class='btn btn-primary meal-button' id='snack-submi'>Dinner</button>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='row input-group'>
+                    <input class='form-control' type="text" id='food-search' placeholder='Search by name'>
+                </div>
+            </div>
+            <div class='row'>
+                <table class="table table-bordered index">
                     <thead>
                         <tr>
-                            <th>Goal</th>
-                            <th>Total</th>
-                            <th>Remaining</th>
+                            <th>Food</th>
+                            <th>Calories</th>
+                            <th></th>
                         </tr>
                     </thead>
-                    <tbody id='total-remaining-calories'>
-                        <tr>
-                            <td id='goal-calories'></td>
-                            <td id='total-calories'></td>
-                            <td class='calories' id='remaining-calories'></td>
-                        </tr>
+                    <tbody id='diary-food-index'>
+
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     <script src="main.bundle.js"></script>
-    </div>
 </body>
 
 </html>

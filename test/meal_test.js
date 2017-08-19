@@ -1,8 +1,8 @@
 const assert = require('chai').assert;
 const webdriver = require('selenium-webdriver');
 const Meal = require("../lib/meal.js")
-    // var until = webdriver.until;
-    // var frontEndLocation = "http://localhost:8080"
+const until = webdriver.until;
+const frontEndLocation = "http://localhost:8080"
 
 describe('test meal object', function() {
     it('should meal info and food info', function() {

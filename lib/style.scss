@@ -46,3 +46,26 @@ button {
 .negative {
     color: red;
 }
+
+.diary {
+    display: flex;
+}
+
+#diary-index {
+    width: 60%;
+}
+
+.meal-button {
+    width: 100px;
+    margin: 10px;
+}
+
+.meal-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    width: 70%;
+}
+
+#food-search {
+    width: 300px;
+}
