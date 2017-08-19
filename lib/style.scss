@@ -45,3 +45,18 @@ button {
 .negative {
     color: red;
 }
+
+//Food.html
+
+.container.foods {
+  .input-food, .input-calories {
+    margin-bottom: 25px;
+  }
+  .notify {
+    color: red;
+    position: absolute;
+    bottom: -18px;
+    left: 0px;
+  }
+
+}
