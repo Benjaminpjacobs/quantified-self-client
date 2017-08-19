@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <div class='container'>
+    <div class='container diary'>
         <div class='meal-tables' id='meals'>
             <div class='meal' id='breakfast'>
                 <h1>Breakfast:</h1>
@@ -22,12 +22,16 @@
                         </thead>
                         <tbody id='breakfast-items'>
                             <tr>
-                                <td>Total Calories:</td>
-                                <td id='breakfast-total-calories'></td>
+                                <td><b>Goal Calories:</b></td>
+                                <td class='goal-calories' id='breakfast-goal-calories'></td>
                             </tr>
                             <tr>
-                                <td>Remaining Calories:</td>
-                                <td class='calories' id='breakfast-remaining-calories'></td>
+                                <td><b>Total Calories:</b></td>
+                                <td class='total-calories' id='breakfast-total-calories'></td>
+                            </tr>
+                            <tr>
+                                <td><b>Remaining Calories:</b></td>
+                                <td class='remaining-calories' id='breakfast-remaining-calories'></td>
                             </tr>
                         </tbody>
                     </table>
@@ -45,12 +49,16 @@
                         </thead>
                         <tbody id='lunch-items'>
                             <tr>
-                                <td>Total Calories:</td>
-                                <td id='lunch-total-calories'></td>
+                                <td><b>Goal Calories:</b></td>
+                                <td class='goal-calories' id='lunch-goal-calories'></td>
                             </tr>
                             <tr>
-                                <td>Remaining Calories:</td>
-                                <td class='calories' id='lunch-remaining-calories'></td>
+                                <td><b>Total Calories:</b></td>
+                                <td class='total-calories' id='lunch-total-calories'></td>
+                            </tr>
+                            <tr>
+                                <td><b>Remaining Calories:</b></td>
+                                <td class='remaining-calories' id='lunch-remaining-calories'></td>
                             </tr>
                         </tbody>
                     </table>
@@ -68,12 +76,16 @@
                         </thead>
                         <tbody id='snack-items'>
                             <tr>
-                                <td>Total Calories:</td>
-                                <td id='snack-total-calories'></td>
+                                <td><b>Goal Calories:</b></td>
+                                <td class='goal-calories' id='snack-goal-calories'></td>
                             </tr>
                             <tr>
-                                <td>Remaining Calories:</td>
-                                <td class='calories' id='snack-remaining-calories'></td>
+                                <td><b>Total Calories:</b></td>
+                                <td class='total-calories' id='snack-total-calories'></td>
+                            </tr>
+                            <tr>
+                                <td><b>Remaining Calories:</b></td>
+                                <td class='remaining-calories' id='snack-remaining-calories'></td>
                             </tr>
                         </tbody>
                     </table>
@@ -91,42 +103,82 @@
                         </thead>
                         <tbody id='dinner-items'>
                             <tr>
-                                <td>Total Calories:</td>
-                                <td id='dinner-total-calories'></td>
+                                <td><b>Goal Calories:</b></td>
+                                <td class='goal-calories' id='dinner-goal-calories'></td>
                             </tr>
                             <tr>
-                                <td>Remaining Calories:</td>
-                                <td class='calories' id='dinner-remaining-calories'></td>
+                                <td><b>Total Calories:</b></td>
+                                <td class='total-calories' id='dinner-total-calories'></td>
+                            </tr>
+                            <tr>
+                                <td><b>Remaining Calories:</b></td>
+                                <td class='remaining-calories' id='dinner-remaining-calories'></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class='row calculations'>
+                <h1>Totals:</h1>
+                <div class='row'>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Goal</th>
+                                <th>Total</th>
+                                <th>Remaining</th>
+                            </tr>
+                        </thead>
+                        <tbody id='total-remaining-calories'>
+                            <tr>
+                                <td id='goal-calories'></td>
+                                <td id='total-calories'></td>
+                                <td class='remaining-calories' id='remaining-calories'></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        <div class='row calculations'>
-            <h1>Totals:</h1>
+        <div id='diary-index'>
+            <h1>Foods:</h1>
             <div class='row'>
-                <table class="table table-bordered">
+                <a href="/foods.html">
+                    <button class='btn btn-primary' id='submit'>New Food</button>
+                </a>
+            </div>
+            <div class='row'>
+                <h4> Add Selected To </h4>
+                <div class='meal-buttons'>
+                    <button class='btn btn-primary meal-button' id='breakfast'>Breakfast</button>
+                    <button class='btn btn-primary meal-button' id='lunch'>Lunch</button>
+                    <button class='btn btn-primary meal-button' id='snack'>Snack</button>
+                    <button class='btn btn-primary meal-button' id='dinner'>Dinner</button>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='row input-group'>
+                    <input class='form-control' type="text" id='food-search' placeholder='Search by name'>
+                </div>
+            </div>
+            <div class='row'>
+                <button class='btn btn-primary' id='food-sort'>Calories</button>
+                <table class="table table-bordered index">
                     <thead>
                         <tr>
-                            <th>Goal</th>
-                            <th>Total</th>
-                            <th>Remaining</th>
+                            <th>Food</th>
+                            <th class='calorie-heading'>Calories <span class=''></span></th>
+                            <th></th>
                         </tr>
                     </thead>
-                    <tbody id='total-remaining-calories'>
-                        <tr>
-                            <td id='goal-calories'></td>
-                            <td id='total-calories'></td>
-                            <td class='calories' id='remaining-calories'></td>
-                        </tr>
+                    <tbody id='diary-food-index'>
+
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     <script src="main.bundle.js"></script>
-    </div>
 </body>
 
 </html>
