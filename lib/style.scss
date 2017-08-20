@@ -7,6 +7,10 @@
         color: red;
         font-size: 20px;
     }
+
+    .glyphicon:hover {
+      cursor: pointer;
+    }
 }
 
 .table-bordered {
@@ -90,5 +94,28 @@ button {
         position: absolute;
         bottom: -18px;
         left: 0px;
+    }
+
+    .delete-food {
+      position: relative;
+
+      .confirm-delete {
+        position: absolute;
+        bottom: 0px;
+        left: 48px;
+        width: 100%;
+        border: 1px solid #000;
+        padding: 10px;
+        border-radius: 5px;
+
+        p {
+          font-size: 12px;
+          margin: 0;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
     }
 }
