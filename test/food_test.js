@@ -20,8 +20,8 @@ describe('test food object', function() {
     it('should return HTML', function() {
         const food = new Food({ id: 1, name: 'Banana', calories: 150 })
         let expected = `<tr class='food' id=1>
-                  <td contenteditable="true">Banana</td>
-                  <td contenteditable="true" class='calorie-count'>150</td>
+                  <td class="editable food-name" contenteditable="true">Banana</td>
+                  <td class="editable food-cal" contenteditable="true" class='calorie-count'>150</td>
                   <td class='delete-food'>
                     <span class='glyphicon glyphicon-remove-circle delete'>
                     </span>
@@ -78,6 +78,8 @@ describe('test food object', function() {
     })
 })
 
+<<
+<< << < HEAD
 // test.describe('testing my foods', function() {
 //     var driver;
 //     this.timeout(10000);
@@ -139,3 +141,67 @@ describe('test food object', function() {
 
 
 // });
+    ===
+    === =
+    test.describe('testing my foods', function() {
+        var driver;
+        this.timeout(10000);
+
+        test.beforeEach(function() {
+            driver = new webdriver.Builder()
+                .forBrowser('chrome')
+                .build();
+        });
+
+        test.afterEach(function() {
+            driver.quit();
+        });
+
+        test.it("lists all the foods on load", function() {
+            driver.get(`${frontEndLocation}`);
+            driver.wait(until.elementLocated({ id: "1" }));
+            driver.findElements({ css: ".food" })
+                .then(function(entries) {
+                    assert.isAbove(entries.length, 5);
+                });
+        });
+
+        test.it("adds food", function() {
+            let originalFoodList = ''
+            driver.get(`${frontEndLocation}`);
+            driver.wait(until.elementLocated({ id: "1" }));
+            driver.findElements({ css: ".food" })
+                .then(function(foods) {
+                    originalFoodList = foods.length
+                });
+            driver.findElement({ id: 'new-food-name' }).sendKeys("Bagel");
+            driver.findElement({ id: 'new-food-cal' }).sendKeys("100");
+            driver.findElement({ id: 'submit' }).click();
+            driver.sleep(1000)
+            driver.findElements({ css: ".food" })
+                .then(function(foods) {
+                    let diff = foods.length - originalFoodList
+                    assert.equal(diff, 1)
+                });
+        });
+
+        // test.it("deletes food", function() {
+        //     let originalFoodList = ''
+        //     driver.get(`${frontEndLocation}`);
+        //     driver.wait(until.elementLocated({ id: "1" }));
+        //     driver.findElements({ css: ".food" })
+        //         .then(function(foods) {
+        //             originalFoodList = foods.length
+        //         });
+        //     driver.findElement({ css: '.delete' }).click();
+        //     driver.sleep(1000)
+        //     driver.findElements({ css: ".food" })
+        //         .then(function(foods) {
+        //             let diff = originalFoodList - foods.length
+        //             assert.equal(diff, 1)
+        //         });
+        // });
+
+
+    }); >>>
+>>> > development
