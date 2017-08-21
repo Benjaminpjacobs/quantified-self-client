@@ -1,3 +1,4 @@
+var Promise = require('bluebird');
 const sinon = require('sinon')
 const pry = require('pryjs');
 const assert = require('chai').assert
@@ -8,6 +9,7 @@ var test = require('selenium-webdriver/testing');
 var frontEndLocation = "http://localhost:8080/foods.html"
 
 describe('test food object', function() {
+
     it('should hold name and calories', function() {
         const food = new Food({ id: 1, name: 'Banana', calories: 150 })
         assert.equal(food.id, 1)
@@ -41,16 +43,16 @@ describe('test food object', function() {
     })
 
     it('should validate food', function() {
-        let fakeNode = { append: function(input) { return input } }
+        let nodeStub = { append: function(input) { return input } }
         let food = new Food({ id: 1, name: 'Banana', calories: 150 })
 
         assert.isTrue(Food.validate(food))
 
         let food2 = new Food({ id: 1, name: '', calories: 150 })
-        assert.equal(Food.validate(food2, fakeNode, fakeNode), '<span class="notify">Please enter a food name.</span>')
+        assert.equal(Food.validate(food2, nodeStub, nodeStub), '<span class="notify">Please enter a food name.</span>')
 
         let food3 = new Food({ id: 1, name: 'Banana', calories: '' })
-        assert.equal(Food.validate(food3, fakeNode, fakeNode), '<span class="notify">Please enter a calorie amount.</span>')
+        assert.equal(Food.validate(food3, nodeStub, nodeStub), '<span class="notify">Please enter a calorie amount.</span>')
     })
 
     it('should map food objects', function() {
@@ -61,6 +63,19 @@ describe('test food object', function() {
         assert.instanceOf(foodObjects[2], Food)
     })
 
+    it('should add new food', function() {
+        function NodeStub() {
+            this.result = ''
+            this.prepend = function(input) { this.result = input }
+        }
+        let nodeStub = new NodeStub
+        let stub = sinon.stub(Food, 'post').returns(new Promise((resolve, reject) => { resolve({ id: 1, name: 'Banana', calories: 150 }) }))
+        let food = new Food({ id: 1, name: 'Banana', calories: 150 })
+        let call = Food.addNew(food, nodeStub)
+        sinon.assert.calledOnce(stub)
+            // assert.equal(nodeStub.result, expected)
+
+    })
 })
 
 // test.describe('testing my foods', function() {
