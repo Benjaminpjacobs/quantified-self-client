@@ -17,8 +17,8 @@ describe('test food object', function() {
     it('should return HTML', function() {
         const food = new Food({ id: 1, name: 'Banana', calories: 150 })
         let expected = `<tr class='food' id=1>
-                  <td>Banana</td>
-                  <td class='calorie-count'>150</td>
+                  <td class="editable food-name" contenteditable="true">Banana</td>
+                  <td class="editable food-cal" contenteditable="true" class='calorie-count'>150</td>
                   <td class='delete-food'>
                     <span class='glyphicon glyphicon-remove-circle delete'>
                     </span>
