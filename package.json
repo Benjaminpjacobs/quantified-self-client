@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "fs": "0.0.1-security",
+    "webpack": "^1.15.0",
     "webpack-dev-server": "^1.16.5"
   }
 }
