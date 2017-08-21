@@ -430,6 +430,10 @@
 	        dinner: dinnerTarget
 	    });
 
+	    ///////////////////////   
+	    // Event Functions
+	    //////////////////////
+
 	    const foodIncluded = (node, query) => {
 	        return $(node).find('td').first().text().toLowerCase().includes(query);
 	    };
@@ -451,10 +455,48 @@
 	    };
 
 	    const resetIndex = () => {
-	        $('input:checkbox:checked').prop('checked', false);
+	        $('.add-food-check input:checkbox:checked').prop('checked', false);
 	        $foodSearch.val('');
 	        $('#diary-food-index tr').show();
 	    };
+
+	    const prependToTable = (node, food) => {
+	        node.prepend(food.toHTML());
+	    };
+
+	    const updateMealTableTotal = (mealTable, foodItem) => {
+	        Meal.addFoodItem(mealTable.data().id, foodItem.id).then(function (data) {
+	            prependToTable(mealTable, foodItem);
+	            Meal.updateTotal(mealTable);
+	        });
+	    };
+
+	    const addEachFoodToMeal = (mealTable, checkedFoods) => {
+	        checkedFoods.each(function (key, food) {
+	            let node = food.closest('tr');
+	            let foodItem = new Food({
+	                id: node.id,
+	                name: node.children[0].innerText,
+	                calories: node.children[1].innerText
+	            });
+	            updateMealTableTotal(mealTable, foodItem);
+	        });
+	    };
+
+	    const removeFoodFromMeal = (node, mealTable) => {
+	        node.remove();
+	        Meal.updateTotal(mealTable);
+	    };
+
+	    const clearFields = nodeCollection => {
+	        nodeCollection.forEach(function (node) {
+	            node.val('');
+	        });
+	    };
+
+	    ///////////////////////   
+	    // Initial Functions
+	    //////////////////////
 
 	    Food.getAll().then(function (response) {
 	        return Food.mapObjects(response);
@@ -472,16 +514,19 @@
 	        Meal.updateGrandTotal(target);
 	    });
 
+	    ///////////////////////   
+	    // Event Listeners
+	    //////////////////////
+
+
 	    $foodSubmit.on('click', function () {
 	        let food = {
 	            name: $newFoodName.val(),
 	            calories: $newFoodCalories.val()
 	        };
-
-	        if (Food.validate(food)) {
+	        if (Food.validate(food, $('.input-food'), $('.input-calories')) === true) {
 	            Food.addNew(food, $foodIndex);
-	            $newFoodName.val('');
-	            $newFoodCalories.val('');
+	            clearFields([$newFoodName, $newFoodCalories]);
 	            $('.notify').remove();
 	        }
 	    });
@@ -532,31 +577,15 @@
 	    });
 
 	    $mealButtons.on('click', function (event) {
-	        let meal = event.target.id;
-	        let $mealTable = $(`#${meal}-items`);
-
-	        $('input:checked').each(function (key, food) {
-	            let node = food.closest('tr');
-	            let foodItem = new Food({
-	                id: node.id,
-	                name: node.children[0].innerText,
-	                calories: node.children[1].innerText
-	            });
-	            Meal.addFoodItem($mealTable.data().id, foodItem.id).then(function (data) {
-	                $mealTable.prepend(foodItem.toHTML());
-	                Meal.updateTotal($mealTable);
-	            });
-	        });
+	        let $mealTable = $(`#${event.target.id}-items`);
+	        addEachFoodToMeal($mealTable, $('.add-food-check input:checked'));
 	        resetIndex();
 	    });
 
 	    $mealTables.on('click', '.delete', function (event) {
 	        let node = this.closest('tr');
 	        let $mealTable = $(`#${this.closest('tbody').id}`);
-	        Meal.removeFoodItem($mealTable.data().id, node.id).then(function (data) {
-	            $(`#${node.id}`).remove();
-	            Meal.updateTotal($mealTable);
-	        });
+	        Meal.removeFoodItem($mealTable.data().id, node.id).then(removeFoodFromMeal($(`#${node.id}`), $mealTable));
 	    });
 
 	    $foodSearch.on('keyup', function (e) {
@@ -10860,7 +10889,7 @@
 	    toHTML() {
 	        return `<tr class='food' id=${this.id}>
 	                  <td class="editable food-name" contenteditable="true">${this.name}</td>
-	                  <td class="editable food-cal" contenteditable="true" class='calorie-count'>${this.calories}</td>
+	                  <td class="editable food-cal calorie-count" contenteditable="true">${this.calories}</td>
 	                  <td class='delete-food'>
 	                    <span class='glyphicon glyphicon-remove-circle delete'>
 	                    </span>
@@ -10930,12 +10959,12 @@
 	        });
 	    }
 
-	    static validate(food) {
+	    static validate(food, foodName, foodCal) {
 	        let msg = 'Please enter a';
 	        if (food.name === '') {
-	            $('.input-food').append(`<span class="notify">${msg} food name.</span>`);
+	            return foodName.append(`<span class="notify">${msg} food name.</span>`);
 	        } else if (food.calories === '') {
-	            $('.input-calories').append(`<span class="notify">${msg} calorie amount.</span>`);
+	            return foodCal.append(`<span class="notify">${msg} calorie amount.</span>`);
 	        } else {
 	            return true;
 	        }
@@ -11030,30 +11059,30 @@
 	        remaining < 0 ? node.addClass('negative') : node.removeClass('negative');
 	    }
 
-	    static populateAllTables(meals, info) {
+	    static populateAllTables(meals, mealVars) {
 	        meals.forEach(function (meal) {
 	            switch (meal.name) {
 	                case "Breakfast":
-	                    meal.populateTable(info.breakfast);
+	                    meal.populateTable(mealVars.breakfast);
 	                    break;
 	                case "Lunch":
-	                    meal.populateTable(info.lunch);
+	                    meal.populateTable(mealVars.lunch);
 	                    break;
 	                case "Snack":
-	                    meal.populateTable(info.snack);
+	                    meal.populateTable(mealVars.snack);
 	                    break;
 	                case "Dinner":
-	                    meal.populateTable(info.dinner);
+	                    meal.populateTable(mealVars.dinner);
 	                    break;
 	            }
 	        });
 	    }
 
-	    populateTable(data) {
-	        this.appendToTable(data.index);
-	        this.mealCalories(data.calories);
-	        this.goalCalories(data.goalCalories, data.target);
-	        this.mealCaloriesRemaining(data.remainingCal, data.target);
+	    populateTable(meal) {
+	        this.appendToTable(meal.index);
+	        this.mealCalories(meal.calories);
+	        this.goalCalories(meal.goalCalories, meal.target);
+	        this.mealCaloriesRemaining(meal.remainingCal, meal.target);
 	    }
 
 	    appendToTable(node) {
