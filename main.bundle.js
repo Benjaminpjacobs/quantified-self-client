@@ -498,21 +498,25 @@
 	    // Initial Functions
 	    //////////////////////
 
-	    Food.getAll().then(function (response) {
-	        return Food.mapObjects(response);
-	    }).then(function (foods) {
-	        Food.appendFoods(foods, $foodIndex, $diaryFoodIndex);
-	    });
-
-	    Meal.getAll().then(function (response) {
-	        return response.map(function (meal) {
-	            return new Meal(meal);
+	    if ($('#food-index') !== 0) {
+	        Food.getAll().then(function (response) {
+	            return Food.mapObjects(response);
+	        }).then(function (foods) {
+	            Food.appendFoods(foods, $foodIndex, $diaryFoodIndex);
 	        });
-	    }).then(function (meals) {
-	        Meal.populateAllTables(meals, mealTableVariables);
-	    }).then(function () {
-	        Meal.updateGrandTotal(target);
-	    });
+	    }
+
+	    if ($('#diary-food-index').length !== 0) {
+	        Meal.getAll().then(function (response) {
+	            return response.map(function (meal) {
+	                return new Meal(meal);
+	            });
+	        }).then(function (meals) {
+	            Meal.populateAllTables(meals, mealTableVariables);
+	        }).then(function () {
+	            Meal.updateGrandTotal(target);
+	        });
+	    }
 
 	    ///////////////////////   
 	    // Event Listeners
