@@ -13,7 +13,7 @@ const Food = require("../lib/food.js")
 const assert = require('chai').assert
 const webdriver = require('selenium-webdriver');
 const until = webdriver.until;
-const frontEndLocation = "http://localhost:8080"
+const frontEndLocation = "http://localhost:8080/foods.html"
 
 describe('test Food', function() {
 
@@ -51,7 +51,6 @@ describe('test Food', function() {
 
     it('should validate food', function() {
         let nodeStub = { append: function(input) { return input } }
-        console.log(nodeStub)
         let food = new Food({ id: 1, name: 'Banana', calories: 150 })
 
         assert.isTrue(Food.validate(food))
@@ -69,6 +68,13 @@ describe('test Food', function() {
         assert.instanceOf(foodObjects[0], Food)
         assert.instanceOf(foodObjects[1], Food)
         assert.instanceOf(foodObjects[2], Food)
+    })
+
+    it('should add new food', function() {
+      let numFoods = table.find('tr').length
+      Food.addNew(food, table)
+      let diff = table.find('tr').length - numFoods
+      assert.equal(diff, 1)
     })
 
 })

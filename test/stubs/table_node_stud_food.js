@@ -13,7 +13,7 @@ module.exports = $(`<table class="table table-bordered">
                       <tbody class="food-index" id="food-index">
                         <tr class="food" id="5">
                             <td class="editable food-name" contenteditable="true">Blueberry Muffins</td>
-                            <td class="editable food-cal calorie-count" contenteditable="true">450</td>
+                            <td class="editable food-cal calorie-count" contenteditable="true">45</td>
                             <td class="delete-food">
                               <span class="glyphicon glyphicon-remove-circle delete"></span>
                             </td>
