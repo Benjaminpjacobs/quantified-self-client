@@ -8,7 +8,7 @@ var until = webdriver.until;
 var test = require('selenium-webdriver/testing');
 var frontEndLocation = "http://localhost:8080/foods.html"
 
-describe('test food object', function() {
+describe('test Food', function() {
 
     it('should hold name and calories', function() {
         const food = new Food({ id: 1, name: 'Banana', calories: 150 })
