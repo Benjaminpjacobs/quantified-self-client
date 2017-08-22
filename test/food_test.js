@@ -1,11 +1,19 @@
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const { window } = new JSDOM(`<!DOCTYPE html>`);
+const $ = require('jQuery')(window);
 const sinon = require('sinon')
-const pry = require('pryjs');
-const assert = require('chai').assert
+
+const food = require("./stubs/food_stub.js")
+const table = require("./stubs/table_stub_food.js")
+const node = require("./stubs/table_node_stud_food.js")
+
 const Food = require("../lib/food.js")
-var webdriver = require('selenium-webdriver');
-var until = webdriver.until;
-var test = require('selenium-webdriver/testing');
-var frontEndLocation = "http://localhost:8080/foods.html"
+
+const assert = require('chai').assert
+const webdriver = require('selenium-webdriver');
+const until = webdriver.until;
+const frontEndLocation = "http://localhost:8080"
 
 describe('test Food', function() {
 
@@ -43,6 +51,7 @@ describe('test Food', function() {
 
     it('should validate food', function() {
         let nodeStub = { append: function(input) { return input } }
+        console.log(nodeStub)
         let food = new Food({ id: 1, name: 'Banana', calories: 150 })
 
         assert.isTrue(Food.validate(food))
@@ -62,59 +71,30 @@ describe('test Food', function() {
         assert.instanceOf(foodObjects[2], Food)
     })
 
-    it('should add new food', function() {
-        function NodeStub() {
-            this.result = ''
-            this.prepend = function(input) { this.result = input }
-        }
-        let nodeStub = new NodeStub
-        let stub = sinon.stub(Food, 'post').returns(new Promise((resolve, reject) => { resolve({ id: 1, name: 'Banana', calories: 150 }) }))
-        let food = new Food({ id: 1, name: 'Banana', calories: 150 })
-        let call = Food.addNew(food, nodeStub)
-        sinon.assert.calledOnce(stub)
-            // assert.equal(nodeStub.result, expected)
-
-    })
-
-    // it('should update food name', function() {
-    //   function NodeStub() {
-    //       this.result = ''
-    //       this.prepend = function(input) { this.result = input }
-    //   }
-    //   let nodeStub = new NodeStub
-    //   let stub = sinon.stub(Food, 'put').returns(new Promise((resolve, reject) => { resolve({ id: 1, name: 'Banana', calories: 150 }) }))
-    //   let food = new Food({ id: 1, name: 'Banana', calories: 150 })
-    //   let call = Food.addNew(food, nodeStub)
-    //   console.log(call);
-    //   // let newName = "Borscht"
-    //   // let call = Food.updateName(1, newName)
-    //   // console.log(food);
-    //
-    // })
 })
 
-test.describe('testing my foods', function() {
-    var driver;
-    this.timeout(10000);
-
-    test.beforeEach(function() {
-        driver = new webdriver.Builder()
-            .forBrowser('chrome')
-            .build();
-    });
-
-    test.afterEach(function() {
-        driver.quit();
-    });
-
-    test.it("lists all the foods on load", function() {
-        driver.get(`${frontEndLocation}`);
-        driver.wait(until.elementLocated({ id: "1" }));
-        driver.findElements({ css: ".food" })
-            .then(function(entries) {
-                assert.isAbove(entries.length, 5);
-            });
-    });
+// test.describe('testing my foods', function() {
+//     var driver;
+//     this.timeout(10000);
+//
+//     test.beforeEach(function() {
+//         driver = new webdriver.Builder()
+//             .forBrowser('chrome')
+//             .build();
+//     });
+//
+//     test.afterEach(function() {
+//         driver.quit();
+//     });
+//
+//     test.it("lists all the foods on load", function() {
+//         driver.get(`${frontEndLocation}`);
+//         driver.wait(until.elementLocated({ id: "1" }));
+//         driver.findElements({ css: ".food" })
+//             .then(function(entries) {
+//                 assert.isAbove(entries.length, 5);
+//             });
+//     });
 
     // test.it("adds food", function() {
     //     let originalFoodList = ''
@@ -153,4 +133,4 @@ test.describe('testing my foods', function() {
     // });
 
 
-});
+// });

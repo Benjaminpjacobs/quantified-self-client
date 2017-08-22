@@ -1,7 +1,7 @@
 const Food = require("../../lib/food.js")
 
 module.exports = new Food({
-    "id": 1,
+    "id": 192,
     "name": "Granola",
-    "calaories": "123"
+    "calories": "199"
 })
