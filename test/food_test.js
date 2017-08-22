@@ -76,21 +76,21 @@ describe('test Food', function() {
 
     })
 
-    it('should update food name', function() {
-      function NodeStub() {
-          this.result = ''
-          this.prepend = function(input) { this.result = input }
-      }
-      let nodeStub = new NodeStub
-      let stub = sinon.stub(Food, 'put').returns(new Promise((resolve, reject) => { resolve({ id: 1, name: 'Banana', calories: 150 }) }))
-      let food = new Food({ id: 1, name: 'Banana', calories: 150 })
-      let call = Food.addNew(food, nodeStub)
-      console.log(call);
-      // let newName = "Borscht"
-      // let call = Food.updateName(1, newName)
-      // console.log(food);
-
-    })
+    // it('should update food name', function() {
+    //   function NodeStub() {
+    //       this.result = ''
+    //       this.prepend = function(input) { this.result = input }
+    //   }
+    //   let nodeStub = new NodeStub
+    //   let stub = sinon.stub(Food, 'put').returns(new Promise((resolve, reject) => { resolve({ id: 1, name: 'Banana', calories: 150 }) }))
+    //   let food = new Food({ id: 1, name: 'Banana', calories: 150 })
+    //   let call = Food.addNew(food, nodeStub)
+    //   console.log(call);
+    //   // let newName = "Borscht"
+    //   // let call = Food.updateName(1, newName)
+    //   // console.log(food);
+    //
+    // })
 })
 
 test.describe('testing my foods', function() {
