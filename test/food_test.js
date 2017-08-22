@@ -12,6 +12,7 @@ const Food = require("../lib/food.js")
 
 const assert = require('chai').assert
 const webdriver = require('selenium-webdriver');
+const test = require('selenium-webdriver/testing');
 const until = webdriver.until;
 const frontEndLocation = "http://localhost:8080/foods.html"
 
@@ -77,49 +78,55 @@ describe('test Food', function() {
       assert.equal(diff, 1)
     })
 
+    // it('should update an existing food name', function() {
+    //   let id = food.id
+    //   Food.updateName(id, "Peach")
+    //   //assert.equal(food.name, "Peach")
+    // })
+
 })
 
-// test.describe('testing my foods', function() {
-//     var driver;
-//     this.timeout(10000);
-//
-//     test.beforeEach(function() {
-//         driver = new webdriver.Builder()
-//             .forBrowser('chrome')
-//             .build();
-//     });
-//
-//     test.afterEach(function() {
-//         driver.quit();
-//     });
-//
-//     test.it("lists all the foods on load", function() {
-//         driver.get(`${frontEndLocation}`);
-//         driver.wait(until.elementLocated({ id: "1" }));
-//         driver.findElements({ css: ".food" })
-//             .then(function(entries) {
-//                 assert.isAbove(entries.length, 5);
-//             });
-//     });
+test.describe('testing my foods', function() {
+    var driver;
+    this.timeout(10000);
 
-    // test.it("adds food", function() {
-    //     let originalFoodList = ''
-    //     driver.get(`${frontEndLocation}`);
-    //     driver.wait(until.elementLocated({ id: "1" }));
-    //     driver.findElements({ css: ".food" })
-    //         .then(function(foods) {
-    //             originalFoodList = foods.length
-    //         });
-    //     driver.findElement({ id: 'new-food-name' }).sendKeys("Bagel");
-    //     driver.findElement({ id: 'new-food-cal' }).sendKeys("100");
-    //     driver.findElement({ id: 'submit' }).click();
-    //     driver.sleep(1000)
-    //     driver.findElements({ css: ".food" })
-    //         .then(function(foods) {
-    //             let diff = foods.length - originalFoodList
-    //             assert.equal(diff, 1)
-    //         });
-    // });
+    test.beforeEach(function() {
+        driver = new webdriver.Builder()
+            .forBrowser('chrome')
+            .build();
+    });
+
+    test.afterEach(function() {
+        driver.quit();
+    });
+
+    test.it("lists all the foods on load", function() {
+        driver.get(`${frontEndLocation}`);
+        driver.wait(until.elementLocated({ id: "1" }));
+        driver.findElements({ css: ".food" })
+            .then(function(entries) {
+                assert.isAbove(entries.length, 5);
+            });
+    });
+
+    test.it("adds food", function() {
+        let originalFoodList = ''
+        driver.get(`${frontEndLocation}`);
+        driver.wait(until.elementLocated({ id: "1" }));
+        driver.findElements({ css: ".food" })
+            .then(function(foods) {
+                originalFoodList = foods.length
+            });
+        driver.findElement({ id: 'new-food-name' }).sendKeys("Bagel");
+        driver.findElement({ id: 'new-food-cal' }).sendKeys("100");
+        driver.findElement({ id: 'submit' }).click();
+        driver.sleep(1000)
+        driver.findElements({ css: ".food" })
+            .then(function(foods) {
+                let diff = foods.length - originalFoodList
+                assert.equal(diff, 1)
+            });
+    });
 
     // test.it("deletes food", function() {
     //     let originalFoodList = ''
@@ -139,4 +146,4 @@ describe('test Food', function() {
     // });
 
 
-// });
+});
