@@ -18,10 +18,11 @@ const until = webdriver.until;
 const frontEndLocation = "http://localhost:8080"
 
 describe('test Meal', function() {
+
     const mealCalcTotalStub = sinon.stub(Meal, 'calculateTotal').returns(400)
     mealCalcTotalStub.onCall(0).returns(400);
     mealCalcTotalStub.onCall(1).returns(400);
-    mealCalcTotalStub.returns(1800);
+    mealCalcTotalStub.onCall(2).returns(1800);
 
     it('should meal info and food info', function() {
         assert.equal(meal.id, 1)
