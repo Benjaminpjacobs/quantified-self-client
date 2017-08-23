@@ -1,15 +1,14 @@
-var Promise = require('bluebird');
-const sinon = require('sinon')
+const Promise = require('bluebird');
 const pry = require('pryjs');
 const assert = require('chai').assert
 const Food = require("../lib/food.js")
-var webdriver = require('selenium-webdriver');
-var until = webdriver.until;
-var test = require('selenium-webdriver/testing');
-var frontEndLocation = "http://localhost:8080/foods.html"
+const sinon = require('sinon')
+const webdriver = require('selenium-webdriver');
+const until = webdriver.until;
+const test = require('selenium-webdriver/testing');
+const frontEndLocation = "http://localhost:8080/foods.html"
 
 describe('test Food', function() {
-
     it('should hold name and calories', function() {
         const food = new Food({ id: 1, name: 'Banana', calories: 150 })
         assert.equal(food.id, 1)
@@ -78,64 +77,69 @@ describe('test Food', function() {
     })
 })
 
-// test.describe('testing my foods', function() {
-//     var driver;
-//     this.timeout(10000);
-
-//     test.beforeEach(function() {
-//         driver = new webdriver.Builder()
-//             .forBrowser('chrome')
-//             .build();
-//     });
-
-//     test.afterEach(function() {
-//         driver.quit();
-//     });
-
-//     test.it("lists all the foods on load", function() {
-//         driver.get(`${frontEndLocation}`);
-//         driver.wait(until.elementLocated({ id: "1" }));
-//         driver.findElements({ css: ".food" })
-//             .then(function(entries) {
-//                 assert.isAbove(entries.length, 5);
-//             });
-//     });
-
-//     test.it("adds food", function() {
-//         let originalFoodList = ''
-//         driver.get(`${frontEndLocation}`);
-//         driver.wait(until.elementLocated({ id: "1" }));
-//         driver.findElements({ css: ".food" })
-//             .then(function(foods) {
-//                 originalFoodList = foods.length
-//             });
-//         driver.findElement({ id: 'new-food-name' }).sendKeys("Bagel");
-//         driver.findElement({ id: 'new-food-cal' }).sendKeys("100");
-//         driver.findElement({ id: 'submit' }).click();
-//         driver.sleep(1000)
-//         driver.findElements({ css: ".food" })
-//             .then(function(foods) {
-//                 let diff = foods.length - originalFoodList
-//                 assert.equal(diff, 1)
-//             });
-//     });
-
-//     test.it("deletes food", function() {
-//         let originalFoodList = ''
-//         driver.get(`${frontEndLocation}`);
-//         driver.wait(until.elementLocated({ id: "1" }));
-//         driver.findElements({ css: ".food" })
-//             .then(function(foods) {
-//                 originalFoodList = foods.length
-//             });
-//         driver.findElement({ css: '.delete' }).click();
-//         driver.sleep(1000)
-//         driver.findElements({ css: ".food" })
-//             .then(function(foods) {
-//                 let diff = originalFoodList - foods.length
-//                 assert.equal(diff, 0)
-//             });
-//     });
+test.describe('testing my foods', function() {
 
 
-// });
+    var driver;
+    this.timeout(10000);
+
+    test.beforeEach(function() {
+        driver = new webdriver.Builder()
+            .forBrowser('chrome')
+            .build();
+
+    });
+
+    test.afterEach(function() {
+        driver.quit();
+    });
+
+    test.it("lists all the foods on load", function() {
+        driver.get(`${frontEndLocation}`);
+        driver.wait(until.elementLocated({ id: "1" }));
+        driver.findElements({ css: ".food" })
+            .then(function(entries) {
+                assert.isAbove(entries.length, 5);
+            });
+    });
+
+    test.it("adds food", function() {
+        let originalFoodList = ''
+        driver.get(`${frontEndLocation}`);
+        driver.wait(until.elementLocated({ id: "1" }));
+        driver.findElements({ css: ".food" })
+            .then(function(foods) {
+                originalFoodList = foods.length
+            });
+        driver.findElement({ id: 'new-food-name' }).sendKeys("Bagel");
+        driver.findElement({ id: 'new-food-cal' }).sendKeys("100");
+        driver.findElement({ id: 'submit' }).click();
+        driver.sleep(1000)
+        driver.findElements({ css: ".food" })
+            .then(function(foods) {
+                let diff = foods.length - originalFoodList
+                assert.equal(diff, 1)
+            });
+    });
+
+    test.it("deletes food", function() {
+        let originalFoodList = ''
+        driver.get(`${frontEndLocation}`);
+        driver.wait(until.elementLocated({ id: "1" }));
+        driver.findElements({ css: ".food" })
+            .then(function(foods) {
+                originalFoodList = foods.length
+            });
+        driver.findElement({ css: '.delete' }).click();
+        driver.sleep(1000)
+        driver.findElement({ css: '.btn-warning' }).click();
+        driver.sleep(1000)
+        driver.findElements({ css: ".food" })
+            .then(function(foods) {
+                let diff = originalFoodList - foods.length
+                assert.equal(diff, 0)
+            });
+    });
+
+
+});
