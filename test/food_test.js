@@ -17,7 +17,6 @@ const until = webdriver.until;
 const frontEndLocation = "http://localhost:8080/foods.html"
 
 describe('test Food', function() {
-
     it('should hold name and calories', function() {
         const food = new Food({ id: 1, name: 'Banana', calories: 150 })
         assert.equal(food.id, 1)
@@ -87,6 +86,7 @@ describe('test Food', function() {
 })
 
 test.describe('testing my foods', function() {
+
     var driver;
     this.timeout(10000);
 
@@ -94,6 +94,7 @@ test.describe('testing my foods', function() {
         driver = new webdriver.Builder()
             .forBrowser('chrome')
             .build();
+
     });
 
     test.afterEach(function() {
@@ -127,23 +128,25 @@ test.describe('testing my foods', function() {
                 assert.equal(diff, 1)
             });
     });
-
-    // test.it("deletes food", function() {
-    //     let originalFoodList = ''
-    //     driver.get(`${frontEndLocation}`);
-    //     driver.wait(until.elementLocated({ id: "1" }));
-    //     driver.findElements({ css: ".food" })
-    //         .then(function(foods) {
-    //             originalFoodList = foods.length
-    //         });
-    //     driver.findElement({ css: '.delete' }).click();
-    //     driver.sleep(1000)
-    //     driver.findElements({ css: ".food" })
-    //         .then(function(foods) {
-    //             let diff = originalFoodList - foods.length
-    //             assert.equal(diff, 1)
-    //         });
-    // });
+    test.it("deletes food", function() {
+        let originalFoodList = ''
+        driver.get(`${frontEndLocation}`);
+        driver.wait(until.elementLocated({ id: "1" }));
+        driver.findElements({ css: ".food" })
+            .then(function(foods) {
+                originalFoodList = foods.length
+            });
+        driver.findElement({ css: '.delete' }).click();
+        driver.sleep(1000)
+        driver.findElement({ css: '.btn-warning' }).click();
+        driver.sleep(1000)
+        driver.findElements({ css: ".food" })
+            .then(function(foods) {
+                let diff = originalFoodList - foods.length
+                assert.equal(diff, 0)
+            });
+    });
 
 
 });
+
