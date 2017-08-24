@@ -1,11 +1,19 @@
-const Promise = require('bluebird');
-const pry = require('pryjs');
-const assert = require('chai').assert
-const Food = require("../lib/food.js")
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const { window } = new JSDOM(`<!DOCTYPE html>`);
+const $ = require('jQuery')(window);
 const sinon = require('sinon')
+
+const food = require("./stubs/food_stub.js")
+const table = require("./stubs/table_stub_food.js")
+const node = require("./stubs/table_node_stud_food.js")
+
+const Food = require("../lib/food.js")
+
+const assert = require('chai').assert
 const webdriver = require('selenium-webdriver');
-const until = webdriver.until;
 const test = require('selenium-webdriver/testing');
+const until = webdriver.until;
 const frontEndLocation = "http://localhost:8080/foods.html"
 
 describe('test Food', function() {
@@ -63,22 +71,21 @@ describe('test Food', function() {
     })
 
     it('should add new food', function() {
-        function NodeStub() {
-            this.result = ''
-            this.prepend = function(input) { this.result = input }
-        }
-        let nodeStub = new NodeStub
-        let stub = sinon.stub(Food, 'post').returns(new Promise((resolve, reject) => { resolve({ id: 1, name: 'Banana', calories: 150 }) }))
-        let food = new Food({ id: 1, name: 'Banana', calories: 150 })
-        let call = Food.addNew(food, nodeStub)
-        sinon.assert.calledOnce(stub)
-            // assert.equal(nodeStub.result, expected)
-
+      let numFoods = table.find('tr').length
+      Food.addNew(food, table)
+      let diff = table.find('tr').length - numFoods
+      assert.equal(diff, 1)
     })
+
+    // it('should update an existing food name', function() {
+    //   let id = food.id
+    //   Food.updateName(id, "Peach")
+    //   //assert.equal(food.name, "Peach")
+    // })
+
 })
 
 test.describe('testing my foods', function() {
-
 
     var driver;
     this.timeout(10000);
@@ -121,7 +128,6 @@ test.describe('testing my foods', function() {
                 assert.equal(diff, 1)
             });
     });
-
     test.it("deletes food", function() {
         let originalFoodList = ''
         driver.get(`${frontEndLocation}`);
@@ -143,3 +149,4 @@ test.describe('testing my foods', function() {
 
 
 });
+
