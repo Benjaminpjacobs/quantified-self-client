@@ -24,6 +24,15 @@
 		}
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0
+  }
+  100% {
+    opacity: 1
+  }
+}
+
 .meal-title {width: 100%; cursor: pointer; position: relative; top: 5.5em;text-align: center; }
 
 .meal-item {
@@ -33,4 +42,5 @@
     width: 2em; height: 2em;
     margin: -1em;
     transition: all 1s;
+    opacity: 0;
 }
