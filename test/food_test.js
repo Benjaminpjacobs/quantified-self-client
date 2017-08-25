@@ -71,18 +71,11 @@ describe('test Food', function() {
     })
 
     it('should add new food', function() {
-      let numFoods = table.find('tr').length
-      Food.addNew(food, table)
-      let diff = table.find('tr').length - numFoods
-      assert.equal(diff, 1)
+        let numFoods = table.find('tr').length
+        Food.addNew(food, table)
+        let diff = table.find('tr').length - numFoods
+        assert.equal(diff, 1)
     })
-
-    // it('should update an existing food name', function() {
-    //   let id = food.id
-    //   Food.updateName(id, "Peach")
-    //   //assert.equal(food.name, "Peach")
-    // })
-
 })
 
 test.describe('testing my foods', function() {
@@ -149,4 +142,3 @@ test.describe('testing my foods', function() {
 
 
 });
-
