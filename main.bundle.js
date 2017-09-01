@@ -403,216 +403,45 @@
 	const Food = __webpack_require__(7);
 	const Meal = __webpack_require__(8);
 	const MealTableVariables = __webpack_require__(9);
-
-	let target = 2000;
-	let bfastTarget = 400;
-	let lunchTarget = 600;
-	let snackTarget = 200;
-	let dinnerTarget = 800;
+	const TableNodes = __webpack_require__(10);
+	const GrandTotalNodes = __webpack_require__(11);
+	const Handlers = __webpack_require__(12);
+	const Populator = __webpack_require__(13);
 
 	$(document).ready(function () {
-	    const $newFoodName = $('#new-food-name');
-	    const $newFoodCalories = $('#new-food-cal');
-	    const $foodItemEdit = '.food .editable';
-	    const $foodSubmit = $('#submit');
 	    const $foodIndex = $('#food-index');
 	    const $foodSearch = $('#food-search');
 	    const $foodSort = $('#food-sort');
-	    const $diaryFoodIndex = $('#diary-food-index');
-	    const $bfastIndex = $('#breakfast-items');
+	    const $foodSubmit = $('#submit');
 	    const $mealButtons = $('.meal-button');
 	    const $mealTables = $('.meal-tables');
-	    const $mealItems = $('.meal-items');
-	    let mealTableVariables = new MealTableVariables({
-	        breakfast: bfastTarget,
-	        lunch: lunchTarget,
-	        snack: snackTarget,
-	        dinner: dinnerTarget
+
+	    const populatePage = new Populator();
+
+	    const foodUpdaters = [{ heading: "name", update: Handlers.updateFoodName }, { heading: "cal", update: Handlers.updateFoodCal }];
+
+	    foodUpdaters.forEach(data => {
+	        $foodIndex.on('click', `.food .editable.food-${data.heading}`, data.update);
 	    });
 
-	    ///////////////////////   
-	    // Event Functions
-	    //////////////////////
+	    $foodSubmit.on('click', Handlers.submitFood);
 
-	    const foodIncluded = (node, query) => {
-	        return $(node).find('td').first().text().toLowerCase().includes(query);
-	    };
+	    $foodIndex.on('click', '.delete', Handlers.deleteConfirmationPopup);
 
-	    const sortFoodTable = direction => {
-	        $('#diary-food-index tr').sort(function (a, b) {
-	            switch (direction) {
-	                case 'asc':
-	                    return Number($('td:nth-child(2)', a).text()) - Number($('td:nth-child(2)', b).text());
-	                    break;
-	                case 'desc':
-	                    return Number($('td:nth-child(2)', b).text()) - Number($('td:nth-child(2)', a).text());
-	                    break;
-	                case 'orig':
-	                    return Number(b.id) - Number(a.id);
-	                    break;
-	            }
-	        }).appendTo($('#diary-food-index'));
-	    };
+	    $foodIndex.on('click', '.confirm-delete button', Handlers.confirmOrCancelDelete);
 
-	    const resetIndex = () => {
-	        $('.add-food-check input:checkbox:checked').prop('checked', false);
-	        $foodSearch.val('');
-	        $('#diary-food-index tr').show();
-	    };
+	    $mealTables.on('click', '.delete', Handlers.deleteFoodFromMeal);
 
-	    const prependToTable = (node, food) => {
-	        node.prepend(food.toHTML());
-	    };
-
-	    const updateMealTableTotal = (mealTable, foodItem) => {
-	        Meal.addFoodItem(mealTable.data().id, foodItem.id).then(function (data) {
-	            prependToTable(mealTable, foodItem);
-	            Meal.updateTotal(mealTable);
-	        });
-	    };
-
-	    const addEachFoodToMeal = (mealTable, checkedFoods) => {
-	        checkedFoods.each(function (key, food) {
-	            let node = food.closest('tr');
-	            let foodItem = new Food({
-	                id: node.id,
-	                name: node.children[0].innerText,
-	                calories: node.children[1].innerText
-	            });
-	            updateMealTableTotal(mealTable, foodItem);
-	        });
-	    };
-
-	    const removeFoodFromMeal = (node, mealTable) => {
-	        node.remove();
-	        Meal.updateTotal(mealTable);
-	    };
-
-	    const clearFields = nodeCollection => {
-	        nodeCollection.forEach(function (node) {
-	            node.val('');
-	        });
-	    };
-
-	    ///////////////////////   
-	    // Initial Functions
-	    //////////////////////
-
-	    if ($('#food-index') !== 0) {
-	        Food.getAll().then(function (response) {
-	            return Food.mapObjects(response);
-	        }).then(function (foods) {
-	            Food.appendFoods(foods, $foodIndex, $diaryFoodIndex);
-	        });
-	    }
-
-	    if ($('#diary-food-index').length !== 0) {
-	        Meal.getAll().then(function (response) {
-	            return response.map(function (meal) {
-	                return new Meal(meal);
-	            });
-	        }).then(function (meals) {
-	            Meal.populateAllTables(meals, mealTableVariables);
-	        }).then(function () {
-	            Meal.updateGrandTotal(target);
-	        });
-	    }
-
-	    ///////////////////////   
-	    // Event Listeners
-	    //////////////////////
-
-
-	    $foodSubmit.on('click', function () {
-	        let food = {
-	            name: $newFoodName.val(),
-	            calories: $newFoodCalories.val()
-	        };
-	        if (Food.validate(food, $('.input-food'), $('.input-calories')) === true) {
-	            Food.addNew(food, $foodIndex);
-	            clearFields([$newFoodName, $newFoodCalories]);
-	            $('.notify').remove();
-	        }
+	    $mealButtons.on('click', e => {
+	        Handlers.addFoodToMealsTable(e, $('.add-food-check input:checked'));
 	    });
 
-	    $foodIndex.on('click', '.food .editable.food-name', function () {
-	        let currentName = this.innerText;
-	        let id = this.parentElement.id;
-	        $(this).blur(function () {
-	            if (currentName === this.innerText) {
-	                return;
-	            } else {
-	                let newName = this.innerText;
-	                Food.updateName(id, newName);
-	                return;
-	            }
-	        });
+	    $foodSearch.on('keyup', e => {
+	        Handlers.filterFoods(e, $('.food-index tr'));
 	    });
 
-	    $foodIndex.on('click', '.food .editable.food-cal', function () {
-	        let currentCalories = this.innerText;
-	        let id = this.parentElement.id;
-	        $(this).blur(function () {
-	            if (currentCalories === this.innerText) {
-	                return;
-	            } else {
-	                let newCalories = this.innerText;
-	                Food.updateCalories(id, newCalories);
-	                return;
-	            }
-	        });
-	    });
-
-	    $foodIndex.on('click', '.delete', function (event) {
-	        var food = this.parentElement.parentElement;
-	        var id = food.id;
-	        Food.showPopUp(this, id);
-	        //add event listener for click off popup
-	        $(this).prev('.confirm-delete').on('click', 'button', function () {
-	            if (this.id === 'cancel-deletion') {
-	                $('.confirm-delete').remove();
-	                return;
-	            } else {
-	                Food.delete(id).then(function () {
-	                    $(`#${id}`).fadeOut(300);
-	                });
-	            }
-	        });
-	    });
-
-	    $mealButtons.on('click', function (event) {
-	        let $mealTable = $(`#${event.target.id}-items`);
-	        addEachFoodToMeal($mealTable, $('.add-food-check input:checked'));
-	        resetIndex();
-	    });
-
-	    $mealTables.on('click', '.delete', function (event) {
-	        let node = this.closest('tr');
-	        let $mealTable = $(`#${this.closest('tbody').id}`);
-	        Meal.removeFoodItem($mealTable.data().id, node.id).then(removeFoodFromMeal($(`#${node.id}`), $mealTable));
-	    });
-
-	    $foodSearch.on('keyup', function (e) {
-	        let query = e.target.value.toLowerCase();
-	        $('.food-index tr').hide().filter(function (index, node) {
-	            return foodIncluded(node, query);
-	        }).show();
-	    });
-
-	    $foodSort.on('click', function (e) {
-	        if (e.target.classList.contains('asc')) {
-	            sortFoodTable('desc');
-	            $(e.target).attr('class', 'btn btn-primary desc');
-	            $('.calorie-heading').find('span').attr('class', 'glyphicon glyphicon-arrow-down');
-	        } else if (e.target.classList.contains('desc')) {
-	            sortFoodTable('orig');
-	            $(e.target).attr('class', 'btn btn-primary');
-	            $('.calorie-heading').find('span').attr('class', '');
-	        } else {
-	            sortFoodTable('asc');
-	            $(e.target).attr('class', 'btn btn-primary asc');
-	            $('.calorie-heading').find('span').attr('class', 'glyphicon glyphicon-arrow-up');
-	        }
+	    $foodSort.on('click', e => {
+	        Handlers.sorterFunction(e, $('.calorie-heading'));
 	    });
 	});
 
@@ -10880,8 +10709,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	const $ = __webpack_require__(6);
-	const API = "https://quantified-self-rails-backend.herokuapp.com/api/v1";
-	//const API = "http://localhost:3000/api/v1"
+	const API = 'https://quantified-self-express-api.herokuapp.com/api/v1';
 
 	class Food {
 	    constructor(food) {
@@ -10956,11 +10784,8 @@
 	    }
 
 	    static addNew(food, node) {
-	        this.post(food).then(function (response) {
-	            return new Food(response);
-	        }).then(function (food) {
-	            node.prepend(food.toHTML());
-	        });
+	        const item = new Food(food);
+	        node.prepend(item.toHTML());
 	    }
 
 	    static validate(food, foodName, foodCal) {
@@ -10996,7 +10821,7 @@
 
 	const $ = __webpack_require__(6);
 	const Food = __webpack_require__(7);
-	const API = "https://quantified-self-rails-backend.herokuapp.com/api/v1";
+	const API = 'https://quantified-self-express-api.herokuapp.com/api/v1';
 
 	class Meal {
 	    constructor(meal) {
@@ -11037,24 +10862,19 @@
 	        }, 0);
 	    }
 
-	    static updateTotal(table) {
-	        let target = Number(table.find('.goal-calories').text());
-	        let node = table.find('.remaining-calories');
-	        let newTotal = this.calculateTotal(table.find('.calorie-count'));
-
-	        table.find('.total-calories').text(newTotal);
-	        this.updateRemaining(node, target, newTotal);
-	        this.updateGrandTotal();
+	    static updateTotal(mealNodes, grandTotals) {
+	        let newTotal = this.calculateTotal(mealNodes.foods);
+	        mealNodes.total.text(newTotal);
+	        this.updateRemaining(mealNodes.remaining, mealNodes.targetNumber(), newTotal);
+	        this.updateGrandTotal(null, grandTotals);
 	    }
 
-	    static updateGrandTotal(totalTarget = undefined) {
-	        let target = totalTarget || $('#goal-calories').text();
-	        let remCalNode = $('#remaining-calories');
-	        let newGrandTotal = this.calculateTotal($('.meal-tables .total-calories'));
-
-	        $('#total-calories').text(newGrandTotal);
-	        $('#goal-calories').text(target);
-	        this.updateRemaining(remCalNode, target, newGrandTotal);
+	    static updateGrandTotal(totalTarget = undefined, grandTotals) {
+	        let target = totalTarget || grandTotals.goal.text();
+	        let newGrandTotal = this.calculateTotal(grandTotals.tableTotals);
+	        grandTotals.total.text(newGrandTotal);
+	        grandTotals.goal.text(target);
+	        this.updateRemaining(grandTotals.remaining, target, newGrandTotal);
 	    }
 
 	    static updateRemaining(node, target, newTotal) {
@@ -11084,9 +10904,9 @@
 
 	    populateTable(meal) {
 	        this.appendToTable(meal.index);
-	        this.mealCalories(meal.calories);
-	        this.goalCalories(meal.goalCalories, meal.target);
-	        this.mealCaloriesRemaining(meal.remainingCal, meal.target);
+	        meal.calories.text(this.total);
+	        meal.goalCalories.text(meal.target);
+	        Meal.updateRemaining(meal.remainingCal, meal.target, this.total);
 	    }
 
 	    appendToTable(node) {
@@ -11095,19 +10915,6 @@
 	            node.prepend(food.toHTML());
 	        });
 	    }
-
-	    mealCalories(node) {
-	        node.text(this.total);
-	    }
-
-	    goalCalories(node, target) {
-	        node.text(target);
-	    }
-
-	    mealCaloriesRemaining(node, target) {
-	        Meal.updateRemaining(node, target, this.total);
-	    }
-
 	}
 
 	module.exports = Meal;
@@ -11154,6 +10961,292 @@
 	}
 
 	module.exports = MealTableVariables;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+	class TableNodes {
+	    constructor(table) {
+	        this.goal = table.find('.goal-calories');
+	        this.remaining = table.find('.remaining-calories');
+	        this.foods = table.find('.calorie-count');
+	        this.total = table.find('.total-calories');
+	    }
+
+	    targetNumber() {
+	        return Number(this.goal.text());
+	    }
+
+	}
+
+	module.exports = TableNodes;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+	class GrandTotalNodes {
+	    constructor(tables) {
+	        this.goal = tables.find('#goal-calories');
+	        this.total = tables.find('#total-calories');
+	        this.remaining = tables.find('#remaining-calories');
+	        this.tableTotals = tables.find('.total-calories');
+	    }
+
+	}
+
+	module.exports = GrandTotalNodes;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const $ = __webpack_require__(6);
+
+	const Food = __webpack_require__(7);
+	const Meal = __webpack_require__(8);
+	const TableNodes = __webpack_require__(10);
+	const GrandTotalNodes = __webpack_require__(11);
+
+	const grandTotals = new GrandTotalNodes($('#meals'));
+	const $foodSearch = $('#food-search');
+	const $mealTables = $('.meal-tables');
+	const $inputFood = $('.input-food');
+	const $inputCalories = $('.input-calories');
+	const $newFoodName = $('#new-food-name');
+	const $newFoodCalories = $('#new-food-cal');
+	const $foodItemEdit = '.food .editable';
+	const $foodSubmit = $('#submit');
+	const $foodIndex = $('#food-index');
+	const $diaryFoodIndex = $('#diary-food-index');
+	const $bfastIndex = $('#breakfast-items');
+	const $mealButtons = $('.meal-button');
+	const $mealItems = $('.meal-items');
+
+	const foodIncluded = (node, query) => {
+	    return $(node).find('td').first().text().toLowerCase().includes(query);
+	};
+
+	const addNewFood = (food, node) => {
+	    Food.post(food).then(function (response) {
+	        Food.addNew(response, node);
+	    });
+	};
+
+	const sortFoodTable = direction => {
+	    $('#diary-food-index tr').sort(function (a, b) {
+	        switch (direction) {
+	            case 'asc':
+	                return Number($('td:nth-child(2)', a).text()) - Number($('td:nth-child(2)', b).text());
+	                break;
+	            case 'desc':
+	                return Number($('td:nth-child(2)', b).text()) - Number($('td:nth-child(2)', a).text());
+	                break;
+	            case 'orig':
+	                return Number(b.id) - Number(a.id);
+	                break;
+	        }
+	    }).appendTo($('#diary-food-index'));
+	};
+
+	const resetIndex = () => {
+	    $('.add-food-check input:checkbox:checked').prop('checked', false);
+	    $foodSearch.val('');
+	    $('#diary-food-index tr').show();
+	};
+
+	const prependToTable = (node, food) => {
+	    node.prepend(food.toHTML());
+	};
+
+	const updateMealTableTotal = (mealTable, foodItem) => {
+	    Meal.addFoodItem(mealTable.data().id, foodItem.id).then(function (data) {
+	        prependToTable(mealTable, foodItem);
+	        const mealNodes = new TableNodes(mealTable);
+
+	        Meal.updateTotal(mealNodes, grandTotals);
+	    });
+	};
+
+	const addEachFoodToMeal = (mealTable, checkedFoods) => {
+	    checkedFoods.each(function (key, food) {
+	        const node = food.closest('tr');
+	        const foodItem = new Food({
+	            id: node.id,
+	            name: node.children[0].innerText,
+	            calories: node.children[1].innerText
+	        });
+	        updateMealTableTotal(mealTable, foodItem);
+	    });
+	};
+
+	const removeFoodFromMeal = (node, mealTable) => {
+	    node.remove();
+	    const mealNodes = new TableNodes(mealTable);
+	    Meal.updateTotal(mealNodes, grandTotals);
+	};
+
+	const clearFields = nodeCollection => {
+	    nodeCollection.forEach(function (node) {
+	        node.val('');
+	    });
+	};
+
+	const sorterFunction = (e, node) => {
+	    if (e.target.classList.contains('asc')) {
+	        sortFoodTable('desc');
+	        $(e.target).attr('class', 'btn btn-primary desc');
+	        node.find('span').attr('class', 'glyphicon glyphicon-arrow-down');
+	    } else if (e.target.classList.contains('desc')) {
+	        sortFoodTable('orig');
+	        $(e.target).attr('class', 'btn btn-primary');
+	        node.find('span').attr('class', '');
+	    } else {
+	        sortFoodTable('asc');
+	        $(e.target).attr('class', 'btn btn-primary asc');
+	        node.find('span').attr('class', 'glyphicon glyphicon-arrow-up');
+	    }
+	};
+
+	const filterFoods = (e, node) => {
+	    const query = e.target.value.toLowerCase();
+	    node.hide().filter(function (index, node) {
+	        return foodIncluded(node, query);
+	    }).show();
+	};
+
+	const deleteFoodFromMeal = e => {
+	    const node = e.currentTarget.closest('tr');
+	    const $mealTable = $(`#${e.currentTarget.closest('tbody').id}`);
+	    Meal.removeFoodItem($mealTable.data().id, node.id).then(removeFoodFromMeal($(`#${node.id}`), $mealTable));
+	};
+
+	const deleteConfirmationPopup = e => {
+	    const food = e.currentTarget.parentElement.parentElement;
+	    const id = food.id;
+	    Food.showPopUp(e.currentTarget, id);
+	};
+
+	const updateFoodCal = e => {
+	    let currentCalories = e.currentTarget.innerText;
+	    let id = e.currentTarget.parentElement.id;
+	    $(e.currentTarget).blur(function () {
+	        if (currentCalories === e.currentTarget.innerText) {
+	            return;
+	        } else {
+	            let newCalories = e.currentTarget.innerText;
+	            Food.updateCalories(id, newCalories);
+	            return;
+	        }
+	    });
+	};
+
+	const updateFoodName = e => {
+	    let currentName = e.currentTarget.innerText;
+	    let id = e.currentTarget.parentElement.id;
+	    $(e.currentTarget).blur(function () {
+	        if (currentName === e.currentTarget.innerText) {
+	            return;
+	        } else {
+	            let newName = e.currentTarget.innerText;
+	            Food.updateName(id, newName);
+	            return;
+	        }
+	    });
+	};
+
+	const submitFood = () => {
+	    let food = {
+	        name: $newFoodName.val(),
+	        calories: $newFoodCalories.val()
+	    };
+	    if (Food.validate(food, $inputFood, $inputCalories) === true) {
+	        addNewFood(food, $foodIndex);
+	        clearFields([$newFoodName, $newFoodCalories]);
+	        $('.notify').remove();
+	    }
+	};
+
+	const confirmOrCancelDelete = e => {
+	    const id = e.currentTarget.parentElement.parentElement.parentElement.id;
+	    if (e.currentTarget.id === 'cancel-deletion') {
+	        $(e.currentTarget.parentElement).remove();
+	        return;
+	    } else {
+	        Food.delete(id).then(function () {
+	            $(`#${id}`).fadeOut(300);
+	        });
+	    }
+	};
+
+	const addFoodToMealsTable = (e, checkedFoods) => {
+	    let $mealTable = $(`#${event.target.id}-items`);
+	    addEachFoodToMeal($mealTable, checkedFoods);
+	    resetIndex();
+	};
+
+	module.exports = {
+	    deleteConfirmationPopup,
+	    deleteFoodFromMeal,
+	    addFoodToMealsTable,
+	    filterFoods,
+	    sorterFunction,
+	    submitFood,
+	    updateFoodCal,
+	    updateFoodName,
+	    confirmOrCancelDelete
+	};
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	let target = 2000;
+	let bfastTarget = 400;
+	let lunchTarget = 600;
+	let snackTarget = 200;
+	let dinnerTarget = 800;
+
+	const $ = __webpack_require__(6);
+	const Food = __webpack_require__(7);
+	const Meal = __webpack_require__(8);
+	const MealTableVariables = __webpack_require__(9);
+	const GrandTotalNodes = __webpack_require__(11);
+
+	const $foodIndex = $('#food-index');
+	const $diaryFoodIndex = $('#diary-food-index');
+	const mealTableVariables = new MealTableVariables({
+	    breakfast: bfastTarget,
+	    lunch: lunchTarget,
+	    snack: snackTarget,
+	    dinner: dinnerTarget
+	});
+	const grandTotals = new GrandTotalNodes($('#meals'));
+
+	class Populator {
+	    constructor() {
+	        Food.getAll().then(function (response) {
+	            return Food.mapObjects(response);
+	        }).then(function (foods) {
+	            Food.appendFoods(foods, $foodIndex, $diaryFoodIndex);
+	        });
+
+	        if ($('#diary-food-index').length !== 0) {
+	            Meal.getAll().then(function (response) {
+	                return response.map(function (meal) {
+	                    return new Meal(meal);
+	                });
+	            }).then(function (meals) {
+	                Meal.populateAllTables(meals, mealTableVariables);
+	            }).then(function () {
+	                Meal.updateGrandTotal(target, grandTotals);
+	            });
+	        }
+	    }
+	}
+
+	module.exports = Populator;
 
 /***/ })
 /******/ ]);
